@@ -21,6 +21,7 @@ class TennisGame5:
         p1 = self.player1Score
         p2 = self.player2Score
 
+        # TODO logique opaque -> revoir l'algorithmique
         while (p1 > 4 or p2 > 4):
             p1 -= 1
             p2 -= 1
