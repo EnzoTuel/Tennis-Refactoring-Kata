@@ -2,6 +2,7 @@
 
 class TennisGame5:
     def __init__(self, player1Name, player2Name):
+        # TODO Conventions Python non suivies (snake_case)
         self.player1Name = player1Name
         self.player2Name = player2Name
         self.player1Score = 0
@@ -14,8 +15,9 @@ class TennisGame5:
             self.player2Score += 1
         else:
             raise ValueError("Invalid player name.")
-
+    # TODO Renommer la fonction afin de comprendre son usage ex : return_game_score
     def score(self):
+        # TODO appeler p1 player_1_score par exemple
         p1 = self.player1Score
         p2 = self.player2Score
 
