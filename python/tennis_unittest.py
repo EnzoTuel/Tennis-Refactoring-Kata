@@ -81,5 +81,17 @@ class TestTennis(unittest.TestCase):
             game = play_game(TennisGame5, p1Points, p2Points, p1Name, p2Name)
             self.assertEqual(score, game.get_score())
 
+    def test_Total_Points_Game3(self):
+        for testcase in test_cases:
+            (p1Points, p2Points, _, p1Name, p2Name) = testcase
+            game = play_game(TennisGame3, p1Points, p2Points, p1Name, p2Name)
+            self.assertEqual((p1Points, p2Points), game.get_total_points())
+
+    def test_Total_Points_Game5(self):
+        for testcase in test_cases:
+            (p1Points, p2Points, _, p1Name, p2Name) = testcase
+            game = play_game(TennisGame5, p1Points, p2Points, p1Name, p2Name)
+            self.assertEqual((p1Points, p2Points), game.get_total_points())
+
 if __name__ == "__main__":
     unittest.main()

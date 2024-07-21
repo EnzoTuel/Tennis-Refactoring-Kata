@@ -4,12 +4,16 @@ class TennisGame5:
         self.player2_name = player2_name
         self.player1_score = 0
         self.player2_score = 0
+        self.player1_total_points = 0
+        self.player2_total_points = 0
 
     def won_point(self, player_name):
         if player_name == self.player1_name:
             self.player1_score += 1
+            self.player1_total_points += 1
         elif player_name == self.player2_name:
             self.player2_score += 1
+            self.player2_total_points += 1
         else:
             raise ValueError("Invalid player name.")
     
@@ -33,6 +37,9 @@ class TennisGame5:
             return f"{score_map[self.player1_score]}-All" if self.player1_score < 3 else "Deuce"
         
         return f"{score_map[self.player1_score]}-{score_map[self.player2_score]}"
+    
+    def get_total_points(self):
+        return self.player1_total_points, self.player2_total_points
 
 def play_game(TennisGameClass, p1_points, p2_points, p1_name, p2_name):
     game = TennisGameClass(p1_name, p2_name)
