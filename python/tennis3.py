@@ -20,6 +20,7 @@ class TennisGame3:
             # TODO p et s ? Variables non explicites
             p = ["Love", "Fifteen", "Thirty", "Forty"]
             s = p[self.p1]
+            print('test')
             return s + "-All" if (self.p1 == self.p2) else s + "-" + p[self.p2]
         else:
             if (self.p1 == self.p2):
