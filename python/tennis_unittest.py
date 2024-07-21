@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import json
 
 from tennis3 import TennisGame3
 from tennis5 import TennisGame5
-
 
 test_cases = [
     (0, 0, "Love-All", 'player1', 'player2'),
@@ -45,9 +45,7 @@ test_cases = [
     (4, 6, 'Win for player2', 'player1', 'player2'),
     (16, 14, 'Win for player1', 'player1', 'player2'),
     (14, 16, 'Win for player2', 'player1', 'player2'),
-
 ]
-
 
 def play_game(TennisGame, p1Points, p2Points, p1Name, p2Name):
     game = TennisGame(p1Name, p2Name)
@@ -58,6 +56,16 @@ def play_game(TennisGame, p1Points, p2Points, p1Name, p2Name):
             game.won_point(p2Name)
     return game
 
+golden_master = {}
+for testcase in test_cases:
+    p1_points, p2_points, expected_score, p1_name, p2_name = testcase
+    game = play_game(TennisGame3, p1_points, p2_points, p1_name, p2_name)
+    score = game.get_score()
+    key = f"{p1_name}-{p2_name}-{p1_points}-{p2_points}"
+    golden_master[key] = score
+
+with open('golden_master.json', 'w') as file:
+    json.dump(golden_master, file, indent=4)
 
 class TestTennis(unittest.TestCase):
 
@@ -67,13 +75,11 @@ class TestTennis(unittest.TestCase):
             game = play_game(TennisGame3, p1Points, p2Points, p1Name, p2Name)
             self.assertEqual(score, game.get_score())
 
-
     def test_Score_Game5(self):
         for testcase in test_cases:
             (p1Points, p2Points, score, p1Name, p2Name) = testcase
             game = play_game(TennisGame5, p1Points, p2Points, p1Name, p2Name)
             self.assertEqual(score, game.get_score())
-
 
 if __name__ == "__main__":
     unittest.main()

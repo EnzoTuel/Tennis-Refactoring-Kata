@@ -1,3 +1,6 @@
+import json
+import unittest
+
 class TennisGame3:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
@@ -32,3 +35,23 @@ class TennisGame3:
             if score_difference == 1:
                 return f"Advantage {leading_player}"
             return f"Win for {leading_player}"
+
+def play_game(TennisGameClass, p1_points, p2_points, p1_name, p2_name):
+    game = TennisGameClass(p1_name, p2_name)
+    for _ in range(p1_points):
+        game.won_point(p1_name)
+    for _ in range(p2_points):
+        game.won_point(p2_name)
+    return game
+
+class TestGoldenMaster(unittest.TestCase):
+    def setUp(self):
+        with open('golden_master.json', 'r') as file:
+            self.golden_master = json.load(file)
+    
+    def test_against_golden_master(self):
+        for key, expected_score in self.golden_master.items():
+            p1_name, p2_name, p1_points, p2_points = key.split('-')
+            p1_points, p2_points = int(p1_points), int(p2_points)
+            game = play_game(TennisGame3, p1_points, p2_points, p1_name, p2_name)
+            self.assertEqual(expected_score, game.get_score())
