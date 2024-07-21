@@ -1,61 +1,55 @@
-# -*- coding: utf-8 -*-
-
 class TennisGame5:
-    def __init__(self, player1Name, player2Name):
-        # TODO Conventions Python non suivies (snake_case)
-        self.player1Name = player1Name
-        self.player2Name = player2Name
-        self.player1Score = 0
-        self.player2Score = 0
+    def __init__(self, player1_name, player2_name):
+        self.player1_name = player1_name
+        self.player2_name = player2_name
+        self.player1_score = 0
+        self.player2_score = 0
 
-    def won_point(self, playerName):
-        if (playerName == "player1"):
-            self.player1Score += 1
-        elif (playerName == "player2"):
-            self.player2Score += 1
+    def won_point(self, player_name):
+        if player_name == self.player1_name:
+            self.player1_score += 1
+        elif player_name == self.player2_name:
+            self.player2_score += 1
         else:
             raise ValueError("Invalid player name.")
-    # TODO Renommer la fonction afin de comprendre son usage ex : return_game_score
-    def score(self):
-        # TODO appeler p1 player_1_score par exemple
-        p1 = self.player1Score
-        p2 = self.player2Score
-
-        # TODO logique opaque -> revoir l'algorithmique
-        while (p1 > 4 or p2 > 4):
-            p1 -= 1
-            p2 -= 1
-
-        lookup = {
-            (0, 0): "Love-All",
-            (0, 1): "Love-Fifteen",
-            (0, 2): "Love-Thirty",
-            (0, 3): "Love-Forty",
-            (0, 4): "Win for player2",
-            (1, 0): "Fifteen-Love",
-            (1, 1): "Fifteen-All",
-            (1, 2): "Fifteen-Thirty",
-            (1, 3): "Fifteen-Forty",
-            (1, 4): "Win for player2",
-            (2, 0): "Thirty-Love",
-            (2, 1): "Thirty-Fifteen",
-            (2, 2): "Thirty-All",
-            (2, 3): "Thirty-Forty",
-            (2, 4): "Win for player2",
-            (3, 0): "Forty-Love",
-            (3, 1): "Forty-Fifteen",
-            (3, 2): "Forty-Thirty",
-            (3, 3): "Deuce",
-            (3, 4): "Advantage player2",
-            (4, 0): "Win for player1",
-            (4, 1): "Win for player1",
-            (4, 2): "Win for player1",
-            (4, 3): "Advantage player1",
-            (4, 4): "Deuce",
+    
+    def get_score(self):
+        score_map = {
+            0: "Love",
+            1: "Fifteen",
+            2: "Thirty",
+            3: "Forty"
         }
+        
+        if self.player1_score >= 4 or self.player2_score >= 4:
+            if abs(self.player1_score - self.player2_score) >= 2:
+                return f"Win for {self.player1_name if self.player1_score > self.player2_score else self.player2_name}"
+            elif self.player1_score == self.player2_score:
+                return "Deuce"
+            else:
+                return f"Advantage {self.player1_name if self.player1_score > self.player2_score else self.player2_name}"
+        
+        if self.player1_score == self.player2_score:
+            return f"{score_map[self.player1_score]}-All" if self.player1_score < 3 else "Deuce"
+        
+        return f"{score_map[self.player1_score]}-{score_map[self.player2_score]}"
 
-        entry = (p1, p2)
-        if (entry in lookup):
-            return lookup[entry]
-        else:
-            raise ValueError("Invalid score.")
+def play_game(TennisGameClass, p1_points, p2_points, p1_name, p2_name):
+    game = TennisGameClass(p1_name, p2_name)
+    for _ in range(p1_points):
+        game.won_point(p1_name)
+    for _ in range(p2_points):
+        game.won_point(p2_name)
+    return game
+
+test_cases = [
+    (0, 0, "Love-All", "player1", "player2"),
+    (1, 0, "Fifteen-Love", "player1", "player2"),
+    (2, 1, "Thirty-Fifteen", "player1", "player2"),
+    (3, 2, "Forty-Thirty", "player1", "player2"),
+    (4, 3, "Advantage player1", "player1", "player2"),
+    (3, 3, "Deuce", "player1", "player2"),
+    (4, 4, "Deuce", "player1", "player2"),
+    (4, 0, "Win for player1", "player1", "player2"),
+    (0, 4, "Win for player2", "player1", "player2"),
+]
